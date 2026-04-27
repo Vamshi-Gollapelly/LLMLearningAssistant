@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,12 +19,12 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity {
 
     private TextView tvHello, tvUserName, tvHomeTaskDescription;
+    private EditText etCustomTopic;
     private ImageView ivProfile, ivNotification;
     private Button btnStartTask, btnOpenFlashcards, btnOpenStudyPlan;
 
     private ArrayList<String> selectedTopics;
     private String username;
-    private String firstTopic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +34,10 @@ public class HomeActivity extends AppCompatActivity {
         tvHello = findViewById(R.id.tvHello);
         tvUserName = findViewById(R.id.tvUserName);
         tvHomeTaskDescription = findViewById(R.id.tvHomeTaskDescription);
+        etCustomTopic = findViewById(R.id.etCustomTopic);
 
         ivProfile = findViewById(R.id.ivProfile);
         ivNotification = findViewById(R.id.ivNotification);
-        Animation fadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-
-        findViewById(R.id.btnStartTask).startAnimation(fadeIn);
-        findViewById(R.id.btnOpenFlashcards).startAnimation(fadeIn);
-        findViewById(R.id.btnOpenStudyPlan).startAnimation(fadeIn);
 
         btnStartTask = findViewById(R.id.btnStartTask);
         btnOpenFlashcards = findViewById(R.id.btnOpenFlashcards);
@@ -56,13 +53,19 @@ public class HomeActivity extends AppCompatActivity {
             selectedTopics = new ArrayList<>();
         }
 
-        firstTopic = selectedTopics.isEmpty() ? "Algorithms" : selectedTopics.get(0);
+        String suggestedTopic = "";
+        if (!selectedTopics.isEmpty()) {
+            suggestedTopic = selectedTopics.get(0);
+        }
 
         tvHello.setText("Hello,");
         tvUserName.setText(username);
-        tvHomeTaskDescription.setText("Practice task based on your interest: " + firstTopic);
+        tvHomeTaskDescription.setText("Enter a topic below and start your learning task.");
 
+        etCustomTopic.setHint("Enter topic, e.g. OOP, Database, AI");
+        etCustomTopic.setText(suggestedTopic);
 
+        Animation fadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
 
         tvHello.startAnimation(fadeIn);
@@ -80,31 +83,56 @@ public class HomeActivity extends AppCompatActivity {
         );
 
         btnStartTask.setOnClickListener(v -> {
+            String topic = getTopicFromInput();
+
+            if (topic.isEmpty()) {
+                etCustomTopic.setError("Please enter a topic");
+                etCustomTopic.requestFocus();
+                return;
+            }
+
             Intent intent = new Intent(HomeActivity.this, TaskActivity.class);
-            intent.putExtra("taskTitle", "Generated Task 1");
-            intent.putExtra("taskDescription", "Practice task based on your interest: " + firstTopic);
+            intent.putExtra("taskTitle", "Generated Task: " + topic);
+            intent.putExtra("taskDescription", "Practice task based on your topic: " + topic);
+            intent.putExtra("topic", topic);
             startActivity(intent);
         });
 
         btnOpenFlashcards.setOnClickListener(v -> {
+            String topic = getTopicFromInput();
+
+            if (topic.isEmpty()) {
+                etCustomTopic.setError("Please enter a topic for flashcards");
+                etCustomTopic.requestFocus();
+                return;
+            }
+
             Intent intent = new Intent(HomeActivity.this, FlashcardActivity.class);
-            intent.putExtra("topic", firstTopic);
+            intent.putExtra("topic", topic);
             startActivity(intent);
         });
-
         btnOpenStudyPlan.setOnClickListener(v -> {
+            String topic = getTopicFromInput();
+
+            if (topic.isEmpty()) {
+                etCustomTopic.setError("Please enter a topic for study plan");
+                etCustomTopic.requestFocus();
+                return;
+            }
+
+            ArrayList<String> topicsForPlan = new ArrayList<>();
+            topicsForPlan.add(topic);
+
             Intent intent = new Intent(HomeActivity.this, StudyPlanActivity.class);
-            intent.putStringArrayListExtra("topics", selectedTopics);
+            intent.putStringArrayListExtra("topics", topicsForPlan);
             startActivity(intent);
         });
-        btnOpenFlashcards.setOnClickListener(v -> {
-            btnOpenFlashcards.setText("Generating...");
-            btnOpenFlashcards.setEnabled(false);
+    }
 
-            v.postDelayed(() -> {
-                startActivity(new Intent(this, FlashcardActivity.class));
-            }, 1000);
-        });
-
+    private String getTopicFromInput() {
+        if (etCustomTopic == null) {
+            return "";
+        }
+        return etCustomTopic.getText().toString().trim();
     }
 }

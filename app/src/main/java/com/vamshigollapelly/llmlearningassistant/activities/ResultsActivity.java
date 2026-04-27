@@ -13,9 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vamshigollapelly.llmlearningassistant.R;
 import com.vamshigollapelly.llmlearningassistant.adapters.ResultsAdapter;
 import com.vamshigollapelly.llmlearningassistant.models.QuizResult;
+import com.vamshigollapelly.llmlearningassistant.network.ApiClient;
+import com.vamshigollapelly.llmlearningassistant.network.ChatRequest;
+import com.vamshigollapelly.llmlearningassistant.network.ChatResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ResultsActivity extends AppCompatActivity {
 
@@ -23,6 +30,8 @@ public class ResultsActivity extends AppCompatActivity {
     private RecyclerView rvResults;
     private Button btnContinue;
     private List<QuizResult> resultsList;
+
+    private static final String API_KEY = "PASTE_YOUR_OPENAI_API_KEY_HERE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +55,7 @@ public class ResultsActivity extends AppCompatActivity {
         }
 
         rvResults.setLayoutManager(new LinearLayoutManager(this));
-        rvResults.setAdapter(new ResultsAdapter(resultsList, this::generateDummyExplanation));
+        rvResults.setAdapter(new ResultsAdapter(resultsList, this::generateExplanation));
 
         btnContinue.setOnClickListener(v -> {
             Intent intent = new Intent(ResultsActivity.this, HomeActivity.class);
@@ -56,7 +65,7 @@ public class ResultsActivity extends AppCompatActivity {
         });
     }
 
-    private void generateDummyExplanation(
+    private void generateExplanation(
             QuizResult result,
             TextView tvPrompt,
             TextView tvResponse,
@@ -75,20 +84,48 @@ public class ResultsActivity extends AppCompatActivity {
         tvResponse.setVisibility(TextView.GONE);
         tvError.setVisibility(TextView.GONE);
 
-        tvResponse.postDelayed(() -> {
+        generateExplanationFromLLM(prompt, tvResponse, tvError, progressBar);
+    }
+
+    private void generateExplanationFromLLM(
+            String prompt,
+            TextView tvResponse,
+            TextView tvError,
+            ProgressBar progressBar
+    ) {
+        if (API_KEY.equals("PASTE_YOUR_OPENAI_API_KEY_HERE")) {
             progressBar.setVisibility(ProgressBar.GONE);
+            tvError.setText("API key is missing. Please add your OpenAI API key.");
+            tvError.setVisibility(TextView.VISIBLE);
+            return;
+        }
 
-            String explanation;
+        ChatRequest request = new ChatRequest("gpt-4.1-mini", prompt);
 
-            if (result.isCorrect()) {
-                explanation = "AI Response:\nYour answer is correct because it matches the key concept tested in this question. This shows that you understood the main idea.";
-            } else {
-                explanation = "AI Response:\nYour answer is incorrect. The correct answer is '" + result.getCorrectAnswer()
-                        + "' because it better matches the concept asked in the question. Review this topic once more and try a similar question.";
+        ApiClient.getApiService().getLearningResponse(
+                "Bearer " + API_KEY,
+                "application/json",
+                request
+        ).enqueue(new Callback<ChatResponse>() {
+            @Override
+            public void onResponse(Call<ChatResponse> call, Response<ChatResponse> response) {
+                progressBar.setVisibility(ProgressBar.GONE);
+
+                if (response.isSuccessful() && response.body() != null) {
+                    tvResponse.setText("AI Response:\n" + response.body().getTextResponse());
+                    tvResponse.setVisibility(TextView.VISIBLE);
+                } else {
+                    tvError.setText("Failed to generate explanation. Please try again.");
+                    tvError.setVisibility(TextView.VISIBLE);
+                }
             }
 
-            tvResponse.setText(explanation);
-            tvResponse.setVisibility(TextView.VISIBLE);
-        }, 1200);
+            @Override
+            public void onFailure(Call<ChatResponse> call, Throwable t) {
+                progressBar.setVisibility(ProgressBar.GONE);
+                tvError.setText("Network error: " + t.getMessage());
+                tvError.setVisibility(TextView.VISIBLE);
+            }
+        });
     }
 }

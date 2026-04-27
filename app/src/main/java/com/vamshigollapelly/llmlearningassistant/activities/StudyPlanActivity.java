@@ -8,9 +8,17 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.vamshigollapelly.llmlearningassistant.BuildConfig;
 import com.vamshigollapelly.llmlearningassistant.R;
+import com.vamshigollapelly.llmlearningassistant.network.ApiClient;
+import com.vamshigollapelly.llmlearningassistant.network.ChatRequest;
+import com.vamshigollapelly.llmlearningassistant.network.ChatResponse;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class StudyPlanActivity extends AppCompatActivity {
 
@@ -18,6 +26,8 @@ public class StudyPlanActivity extends AppCompatActivity {
     private Button btnGenerateStudyPlan;
     private ProgressBar progressStudyPlan;
     private ArrayList<String> selectedTopics;
+
+    private static final String API_KEY = BuildConfig.OPENAI_API_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +42,7 @@ public class StudyPlanActivity extends AppCompatActivity {
         progressStudyPlan = findViewById(R.id.progressStudyPlan);
 
         selectedTopics = getIntent().getStringArrayListExtra("topics");
+
         if (selectedTopics == null || selectedTopics.isEmpty()) {
             selectedTopics = new ArrayList<>();
             selectedTopics.add("Algorithms");
@@ -50,9 +61,8 @@ public class StudyPlanActivity extends AppCompatActivity {
     private void generateStudyPlan() {
         String topicsText = getTopicsText();
 
-        String prompt = "Suggest a simple 7-day study plan based on this student history: "
-                + "Selected topics: " + topicsText
-                + ". Completed quiz practice and reviewed answer explanations.";
+        String prompt = "Create a simple 7-day study plan for a student based on these selected topics: "
+                + topicsText + ". Keep each day short, practical, and easy to follow.";
 
         tvStudyPlanPrompt.setText("Prompt:\n" + prompt);
         tvStudyPlanPrompt.setVisibility(View.VISIBLE);
@@ -61,21 +71,39 @@ public class StudyPlanActivity extends AppCompatActivity {
         tvStudyPlanResponse.setVisibility(View.GONE);
         tvStudyPlanError.setVisibility(View.GONE);
 
-        tvStudyPlanResponse.postDelayed(() -> {
+        if (API_KEY == null || API_KEY.trim().isEmpty()) {
             progressStudyPlan.setVisibility(View.GONE);
+            tvStudyPlanError.setText("API key is missing. Please add it in local.properties.");
+            tvStudyPlanError.setVisibility(View.VISIBLE);
+            return;
+        }
 
-            String response =
-                    "AI Response:\n\n"
-                            + "Day 1: Review the basics of " + topicsText + ".\n"
-                            + "Day 2: Watch or read one short lesson and write key notes.\n"
-                            + "Day 3: Practise 3 beginner-level questions.\n"
-                            + "Day 4: Revise mistakes from previous quiz attempts.\n"
-                            + "Day 5: Create flashcards and test yourself.\n"
-                            + "Day 6: Complete a small practice task.\n"
-                            + "Day 7: Take a short quiz and review weak areas.";
+        ChatRequest request = new ChatRequest("gpt-4.1-mini", prompt);
 
-            tvStudyPlanResponse.setText(response);
-            tvStudyPlanResponse.setVisibility(View.VISIBLE);
-        }, 1200);
+        ApiClient.getApiService().getLearningResponse(
+                "Bearer " + API_KEY,
+                "application/json",
+                request
+        ).enqueue(new Callback<ChatResponse>() {
+            @Override
+            public void onResponse(Call<ChatResponse> call, Response<ChatResponse> response) {
+                progressStudyPlan.setVisibility(View.GONE);
+
+                if (response.isSuccessful() && response.body() != null) {
+                    tvStudyPlanResponse.setText("AI Response:\n\n" + response.body().getTextResponse());
+                    tvStudyPlanResponse.setVisibility(View.VISIBLE);
+                } else {
+                    tvStudyPlanError.setText("Failed to generate study plan. Please try again.");
+                    tvStudyPlanError.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ChatResponse> call, Throwable t) {
+                progressStudyPlan.setVisibility(View.GONE);
+                tvStudyPlanError.setText("Network error: " + t.getMessage());
+                tvStudyPlanError.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

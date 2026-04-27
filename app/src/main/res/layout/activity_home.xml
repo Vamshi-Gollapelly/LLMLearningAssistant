@@ -1,46 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/homeScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient">
+    android:background="@drawable/bg_gradient"
+    android:fillViewport="true">
 
     <LinearLayout
+        android:id="@+id/homeContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- 🔹 TOP BAR -->
+        <!-- TOP ICONS -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="end">
+            android:gravity="end"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/ivNotification"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_marginEnd="16dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="14dp"
+                android:contentDescription="Notifications"
                 android:src="@android:drawable/ic_dialog_info"
-                android:tint="@android:color/white"/>
+                android:tint="@android:color/white" />
 
             <ImageView
                 android:id="@+id/ivProfile"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:contentDescription="Profile"
                 android:src="@android:drawable/ic_menu_myplaces"
-                android:tint="@android:color/white"/>
+                android:tint="@android:color/white" />
         </LinearLayout>
 
-        <!-- 🔹 GREETING -->
+        <!-- GREETING -->
         <TextView
             android:id="@+id/tvHello"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
             android:text="Hello,"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:layout_marginTop="24dp"/>
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvUserName"
@@ -48,60 +54,82 @@
             android:layout_height="wrap_content"
             android:text="Student"
             android:textColor="@android:color/white"
-            android:textSize="26sp"
-            android:textStyle="bold"/>
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-        <!-- 🔹 TASK CARD -->
+        <!-- TASK CARD -->
         <LinearLayout
+            android:id="@+id/taskCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="26dp"
             android:background="@drawable/card_background"
+            android:elevation="6dp"
             android:orientation="vertical"
             android:padding="18dp">
 
             <TextView
+                android:id="@+id/tvHomeTaskTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Generated Task"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvHomeTaskDescription"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Practice task based on your interests"
-                android:textColor="#CCCCCC"
-                android:textSize="14sp"
-                android:layout_marginTop="6dp"/>
+                android:layout_marginTop="8dp"
+                android:text="Enter a topic below and start your learning task."
+                android:textColor="#D6D6E7"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/etCustomTopic"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="14dp"
+                android:background="@android:color/white"
+                android:hint="Enter topic, e.g. OOP, Database, AI"
+                android:inputType="text"
+                android:padding="12dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="#777777"
+                android:textSize="15sp" />
 
             <Button
                 android:id="@+id/btnStartTask"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Start Task"
+                android:layout_height="52dp"
                 android:layout_marginTop="14dp"
-                android:background="@drawable/button_style"/>
+                android:background="@drawable/button_style"
+                android:contentDescription="Start learning task"
+                android:text="Start Task"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- 🔹 AI FEATURES -->
+        <!-- AI TOOLS TITLE -->
         <TextView
+            android:id="@+id/tvAiToolsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
             android:text="AI Learning Tools"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="28dp"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <!-- Flashcards -->
+        <!-- FLASHCARD CARD -->
         <LinearLayout
+            android:id="@+id/flashcardCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="14dp"
             android:background="@drawable/card_background"
+            android:elevation="5dp"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -111,25 +139,31 @@
                 android:text="Create Flashcards"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnOpenFlashcards"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/button_style"
+                android:contentDescription="Generate flashcards"
                 android:text="Generate Flashcards"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_style"/>
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Study Plan -->
+        <!-- STUDY PLAN CARD -->
         <LinearLayout
+            android:id="@+id/studyPlanCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="18dp"
             android:background="@drawable/card_background"
+            android:elevation="5dp"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -137,15 +171,18 @@
                 android:text="7-Day Study Plan"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnOpenStudyPlan"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/button_style"
+                android:contentDescription="Generate seven day study plan"
                 android:text="Generate Study Plan"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_style"/>
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>

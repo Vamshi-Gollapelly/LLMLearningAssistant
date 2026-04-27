@@ -2,12 +2,26 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { stream ->
+        localProperties.load(stream)
+    }
+}
+
 android {
     namespace 'com.vamshigollapelly.llmlearningassistant'
+
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
         }
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     defaultConfig {
@@ -16,6 +30,8 @@ android {
         targetSdk 36
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "OPENAI_API_KEY", "\"${localProperties.getProperty("OPENAI_API_KEY", "")}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,6 +42,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
