@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#29B6F6">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="18dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="42dp"
+                android:gravity="center"
+                android:text="↩"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:background="#3F6FEF"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upgrade"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="your experience"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:layout_marginBottom="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:orientation="vertical"
+                android:background="#2F6FEA"
+                android:padding="16dp"
+                android:layout_marginBottom="14dp">
+
+                <TextView
+                    android:text="Starter"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Improved Quiz generation"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/starterPurchaseButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Purchase"
+                    android:textStyle="bold"
+                    android:layout_marginTop="14dp"
+                    android:backgroundTint="#69F56B"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:orientation="vertical"
+                android:background="#2F6FEA"
+                android:padding="16dp"
+                android:layout_marginBottom="14dp">
+
+                <TextView
+                    android:text="Intermediate"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Improved Quiz generation"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/intermediatePurchaseButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Purchase"
+                    android:textStyle="bold"
+                    android:layout_marginTop="14dp"
+                    android:backgroundTint="#69F56B"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:orientation="vertical"
+                android:background="#2F6FEA"
+                android:padding="16dp">
+
+                <TextView
+                    android:text="Advanced"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Improved Quiz generation"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/advancedPurchaseButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Purchase"
+                    android:textStyle="bold"
+                    android:layout_marginTop="14dp"
+                    android:backgroundTint="#69F56B"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/sheetBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/paymentSheet"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:padding="18dp"
+        android:visibility="gone">
+
+        <TextView
+            android:text="G Pay"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#222222"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/selectedPlanText"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="Plan selected"
+            android:gravity="center_vertical"
+            android:background="#DDDDDD"
+            android:paddingStart="16dp"
+            android:textColor="#555555"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text=""
+            android:background="#DDDDDD"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text=""
+            android:background="#DDDDDD"
+            android:layout_marginBottom="10dp" />
+
+        <Button
+            android:id="@+id/confirmPaymentButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Confirm Payment"
+            android:textStyle="bold"
+            android:backgroundTint="#69F56B"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/cancelPaymentButton"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="Cancel"
+            android:backgroundTint="#CCCCCC"
+            android:textColor="#000000" />
+
+    </LinearLayout>
+
+</FrameLayout>

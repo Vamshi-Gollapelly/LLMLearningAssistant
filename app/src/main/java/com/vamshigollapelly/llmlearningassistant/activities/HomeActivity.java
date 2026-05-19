@@ -21,7 +21,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView tvHello, tvUserName, tvHomeTaskDescription;
     private EditText etCustomTopic;
     private ImageView ivProfile, ivNotification;
-    private Button btnStartTask, btnOpenFlashcards, btnOpenStudyPlan;
+    private Button btnStartTask, btnOpenFlashcards, btnOpenStudyPlan, btnOpenProfile;
 
     private ArrayList<String> selectedTopics;
     private String username;
@@ -42,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         btnStartTask = findViewById(R.id.btnStartTask);
         btnOpenFlashcards = findViewById(R.id.btnOpenFlashcards);
         btnOpenStudyPlan = findViewById(R.id.btnOpenStudyPlan);
+        btnOpenProfile = findViewById(R.id.profileButton);
 
         username = getIntent().getStringExtra("username");
         if (username == null || username.trim().isEmpty()) {
@@ -73,13 +74,18 @@ public class HomeActivity extends AppCompatActivity {
         btnStartTask.startAnimation(slideUp);
         btnOpenFlashcards.startAnimation(slideUp);
         btnOpenStudyPlan.startAnimation(slideUp);
+        btnOpenProfile.startAnimation(slideUp);
 
-        ivProfile.setOnClickListener(v ->
-                Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
-        );
+        ivProfile.setOnClickListener(v -> openProfile());
+
+        btnOpenProfile.setOnClickListener(v -> openProfile());
 
         ivNotification.setOnClickListener(v ->
-                Toast.makeText(this, "You have 1 learning task due", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                        this,
+                        "Reminder: Complete a quiz to update your profile history.",
+                        Toast.LENGTH_SHORT
+                ).show()
         );
 
         btnStartTask.setOnClickListener(v -> {
@@ -111,6 +117,7 @@ public class HomeActivity extends AppCompatActivity {
             intent.putExtra("topic", topic);
             startActivity(intent);
         });
+
         btnOpenStudyPlan.setOnClickListener(v -> {
             String topic = getTopicFromInput();
 
@@ -127,6 +134,12 @@ public class HomeActivity extends AppCompatActivity {
             intent.putStringArrayListExtra("topics", topicsForPlan);
             startActivity(intent);
         });
+    }
+
+    private void openProfile() {
+        Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+        intent.putExtra("username", username);
+        startActivity(intent);
     }
 
     private String getTopicFromInput() {

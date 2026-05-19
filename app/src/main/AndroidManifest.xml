@@ -21,6 +21,10 @@
         <activity android:name=".activities.HomeActivity" />
         <activity android:name=".activities.InterestsActivity" />
         <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.ProfileActivity"/>
+        <activity android:name=".activities.HistoryActivity" />
+        <activity android:name=".activities.UpgradeActivity" />
+        <activity android:name=".activities.ShareProfileActivity" />
 
         <activity
             android:name=".activities.LoginActivity"

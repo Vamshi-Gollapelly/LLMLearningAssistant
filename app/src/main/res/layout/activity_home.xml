@@ -109,6 +109,14 @@
                 android:text="Start Task"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
+            <Button
+                android:id="@+id/profileButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Open Profile"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#00E676"
+                android:textColor="#000000"/>
         </LinearLayout>
 
         <!-- AI TOOLS TITLE -->
