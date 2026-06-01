@@ -5,12 +5,17 @@ An Android learning app powered by the **OpenAI API (GPT)** that helps students 
 ---
 
 ## Screenshots
+| Login | Home | Task + Hint |
+|---|---|---|
+| ![Login](login-screen.png) | ![Home](home-screen.png) | ![Task](task-screen.png) |
 
-> Add screenshots after running the app on an emulator
+| Flashcards | Study Plan | Profile |
+|---|---|---|
+| ![Flashcards](flashcards-screen.png) | ![Study Plan](studyplan-screen.png) | ![Profile](profile-screen.png) |
 
-| Login | Interests | Home | Task | Results | Flashcards | Study Plan |
-|---|---|---|---|---|---|---|
-| *(screenshot)* | *(screenshot)* | *(screenshot)* | *(screenshot)* | *(screenshot)* | *(screenshot)* | *(screenshot)* |
+| History | Upgrade | Payment | Share |
+|---|---|---|---|
+| ![History](history-screen.png) | ![Upgrade](upgrade-screen.png) | ![Payment](payment-screen.png) | ![Share](share-screen.png) |
 
 ---
 
